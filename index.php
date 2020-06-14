@@ -17,15 +17,7 @@
       <div class="panel-body">
         <div class="col-lg-12">
             
-<?php
-require_once 'PHPExcel/Classes/PHPExcel.php';
-$archivo = "celulares.xlsx";
-$inputFileType = PHPExcel_IOFactory::identify($archivo);
-$objReader = PHPExcel_IOFactory::createReader($inputFileType);
-$objPHPExcel = $objReader->load($archivo);
-$sheet = $objPHPExcel->getSheet(0); 
-$highestRow = $sheet->getHighestRow(); 
-$highestColumn = $sheet->getHighestColumn();?>
+
 
 <form method="POST" action="importar.php" enctype="multipart/form-data">
   <label>Importar:</label> 
