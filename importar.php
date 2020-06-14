@@ -64,15 +64,12 @@ for ($row = 1; $row <= $highestRow; $row++){
     }else{
 
         //echo "Celular:".$sheet->getCell($index_celular.$row)->getValue()."-Total:".$sheet->getCell($index_total.$row)->getValue()."<br>";
-        $explode=explode(':',$sheet->getCell($index_total.$row)->getValue());
-
-        $parte1=str_replace("=SUM(","",$explode[0]);
-        $parte2=str_replace(")","",$explode[1]);
+       
 
         //echo  $sheet->getCell($parte2)->getValue()."<br>";
         //echo $parte2."<br>";
         //print_r($explode);
-        $total=$sheet->getCell($parte1)->getValue()+$sheet->getCell($parte2)->getValue();
+        $total=$sheet->getCell($index_total.$row)->getCalculatedValue();
         $celular=$sheet->getCell($index_celular.$row)->getValue();
         //echo "total=".$total."<br>";
         
@@ -80,8 +77,13 @@ for ($row = 1; $row <= $highestRow; $row++){
         $query=$conn->query($sql) ;
         $result=$query->fetch_assoc();
         
-        if ($result['total_plan']<$total && $query->num_rows>0) {
-        $diferencia=($total-$result['total_plan']);
+        if ($result['total_plan']!=$total && $query->num_rows>0) {
+            
+            if($result['total_plan']<$total){
+             $diferencia=($total-$result['total_plan']);
+            }else if($result['total_plan']>$total){
+                $diferencia=($result['total_plan']-$total);
+            }
 
         $str.='El total del plan del celular '.$result['celular'].' presenta una diferencia de $/'.$diferencia.'<br>';
         }
