@@ -11,7 +11,7 @@ $fileExtension = strtolower(end($fileNameCmps));
 $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
 
 // directory in which the uploaded file will be moved
-$uploadFileDir = './uploaded_files/';
+$uploadFileDir = 'uploaded_files/';
 $dest_path = $uploadFileDir . $newFileName;
  
 if(move_uploaded_file($fileTmpPath, $dest_path))
