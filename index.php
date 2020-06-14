@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="container">
-	<h2>Ejemplo: Leer Archivos Excel con PHP</h2>	
+	<h2>Leer Archivos Excel</h2>	
     <div class="panel panel-primary">
       <div class="panel-heading">
         <h3 class="panel-title">Resultados de archivo de Excel.</h3>
@@ -27,37 +27,14 @@ $sheet = $objPHPExcel->getSheet(0);
 $highestRow = $sheet->getHighestRow(); 
 $highestColumn = $sheet->getHighestColumn();?>
 
-<table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Cuenta</th>
-          <th>Nombre</th>
-          <th>Celualar</th>
-          <th>Tiempo al aire</th>
-          <th>Total</th>
-        </tr>
-      </thead>
-      <tbody>
+<form method="POST" action="importar.php" enctype="multipart/form-data">
+  <label>Importar:</label> 
+  <input type="file" name="uploadedFile" ><br>
+
+  <input type="submit" name="enviar" value="Enviar" class="btn btn-primary">
+</form>
 
 
-<?php
-$num=0;
-for ($row = 2; $row <= $highestRow; $row++){ $num++;?>
-       <tr>
-          <th scope='row'><?php echo $num;?></th>
-          <td><?php echo $sheet->getCell("A".$row)->getValue();?></td>
-          <td><?php echo $sheet->getCell("B".$row)->getValue();?></td>
-          <td><?php echo $sheet->getCell("C".$row)->getValue();?></td>
-          <td><?php echo $sheet->getCell("D".$row)->getValue();?></td>
-          <td><?php echo $sheet->getCell("K".$row)->getValue()+$sheet->getCell("AR".$row)->getValue();?></td>
-        </tr>
-    	
-	<?php	
-}
-?>
-          </tbody>
-    </table>
   </div>	
  </div>	
 </div>
