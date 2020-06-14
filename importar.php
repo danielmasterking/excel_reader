@@ -47,7 +47,7 @@ for ($row = 2; $row <= $highestRow; $row++){
     }
     
 }
-
+unlink($dest_path);
 ?>
 <html>
     <head>
