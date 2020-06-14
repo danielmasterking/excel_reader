@@ -30,20 +30,59 @@ $objPHPExcel = $objReader->load($archivo);
 $sheet = $objPHPExcel->getSheet(0); 
 $highestRow = $sheet->getHighestRow(); 
 $highestColumn = $sheet->getHighestColumn();
-
+//print_r($sheet);
 $str='';
-for ($row = 2; $row <= $highestRow; $row++){
-    $celular=$sheet->getCell("C".$row)->getValue();
-   $sql='SELECT * FROM celulares WHERE celular="'.$celular.'" ';
-    $query=$conn->query($sql) ;
-    $result=$query->fetch_assoc();
-    //print_r($result);
-    $total=$sheet->getCell("K".$row)->getValue()+$sheet->getCell("AR".$row)->getValue();
+$index_total='';
+$index_celular='';
 
-    if ($result['total_plan']<$total && $query->num_rows>0) {
-       $diferencia=($total-$result['total_plan']);
+//echo $highestRow;
+$abc_array=[
+    'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
+    'AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ',
+    'BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM','BN','BO','BP','BQ','BR','BS','BT','BU','BV','BW','BX','BY','BZ',
+    'CA','CC','CC','CD','CE','CF','CG','CH','CI','CJ','CK','CL','CM','CN','CO','CP','CQ','CR','CS','CT','CU','CV','CW','CX','CY','CZ'
+    
+];
+for ($row = 1; $row <= $highestRow; $row++){
+    if ($row==1) {
+        foreach ($abc_array as $key => $value) {
+            //echo $value.$row."=".$sheet->getCell($value.$row)->getValue()."<br>";
+            $valor_excel=$sheet->getCell($value.$row)->getValue();
+            if (trim($valor_excel)=='Celular') {
+                $index_celular=$value;
+            }
 
-       $str.='El total del plan del celular '.$result['celular'].' presenta una diferencia de $/'.$diferencia.'<br>';
+            if (trim($valor_excel)=='Total') {
+                $index_total=$value;
+            }
+        }
+
+       // echo $index_celular."<br>".$index_total;
+        
+    }else{
+
+        //echo "Celular:".$sheet->getCell($index_celular.$row)->getValue()."-Total:".$sheet->getCell($index_total.$row)->getValue()."<br>";
+        $explode=explode(':',$sheet->getCell($index_total.$row)->getValue());
+
+        $parte1=str_replace("=SUM(","",$explode[0]);
+        $parte2=str_replace(")","",$explode[1]);
+
+        //echo  $sheet->getCell($parte2)->getValue()."<br>";
+        //echo $parte2."<br>";
+        //print_r($explode);
+        $total=$sheet->getCell($parte1)->getValue()+$sheet->getCell($parte2)->getValue();
+        $celular=$sheet->getCell($index_celular.$row)->getValue();
+        //echo "total=".$total."<br>";
+        
+        $sql='SELECT * FROM celulares WHERE celular="'.$celular.'" ';
+        $query=$conn->query($sql) ;
+        $result=$query->fetch_assoc();
+        
+        if ($result['total_plan']<$total && $query->num_rows>0) {
+        $diferencia=($total-$result['total_plan']);
+
+        $str.='El total del plan del celular '.$result['celular'].' presenta una diferencia de $/'.$diferencia.'<br>';
+        }
     }
     
 }

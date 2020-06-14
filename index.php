@@ -19,16 +19,16 @@
             
 
 
-<form method="POST" action="importar.php" enctype="multipart/form-data">
-  <label>Importar:</label> 
-  <input type="file" name="uploadedFile" ><br>
+            <form method="POST" action="importar.php" enctype="multipart/form-data">
+              <label>Importar:</label> 
+              <input type="file" name="uploadedFile" ><br>
 
-  <input type="submit" name="enviar" value="Enviar" class="btn btn-primary">
-</form>
+              <input type="submit" name="enviar" value="Enviar" class="btn btn-primary">
+            </form>
 
 
-  </div>	
- </div>	
-</div>
+        </div>	
+      </div>	
+      </div>
 </body>
 </html>
